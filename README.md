@@ -1,9 +1,14 @@
 # use-singleton
 
+[![Npm](https://badgen.net/npm/v/use-singleton)](https://www.npmjs.com/package/use-singleton)
+[![Bundlephobia](https://badgen.net/bundlephobia/minzip/use-singleton)](https://bundlephobia.com/result?p=use-singleton)
+[![Coverage](https://img.shields.io/codecov/c/github/lbb00/use-singleton.svg)](https://codecov.io/gh/lbb00/use-singleton)
+[![License](https://img.shields.io/github/license/lbb00/use-singleton.svg)](https://github.com/lbb00/use-singleton/blob/master/LICENSE)
+
 - No dependency
 - Functional
-- Support typescript
-- Support refresh singleton
+- Supports typescript
+- Supports refresh singleton
 - ~1kb before gzipped
 
 ## Install
