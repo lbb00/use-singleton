@@ -4,6 +4,7 @@
 [![Bundlephobia](https://badgen.net/bundlephobia/minzip/use-singleton)](https://bundlephobia.com/result?p=use-singleton)
 [![Coverage](https://img.shields.io/codecov/c/github/lbb00/use-singleton.svg)](https://codecov.io/gh/lbb00/use-singleton)
 [![License](https://img.shields.io/github/license/lbb00/use-singleton.svg)](https://github.com/lbb00/use-singleton/blob/master/LICENSE)
+[![License](https://img.shields.io/npm/dt/use-singleton.svg)](https://www.npmjs.com/package/use-singleton)
 
 - No dependency
 - Functional
@@ -19,24 +20,20 @@
 npm install use-singleton --save
 ```
 
-### browser
-
-```html
-<script src="use-singleton.min.js"></script>
-```
-
 ## Usage
 
 Base.
 
 ```javascript
+import useSingleton from "use-singleton";
+
 const getSingleton = useSingleton(createInstance, Options);
 ```
 
 Example: create a singleton.
 
 ```javascript
-import useSingleton from "@use-singleton";
+import useSingleton from "use-singleton";
 
 const getInstance = useSingleton(() => {
   const instance = init();
@@ -49,7 +46,7 @@ const instance = getInstance();
 Example: create a singleton with key.
 
 ```javascript
-import useSingleton from "@use-singleton";
+import useSingleton from "use-singleton";
 
 function init() {
   return new Date();
