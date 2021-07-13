@@ -1,6 +1,6 @@
 {
   "name": "use-singleton",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Create the singleton better, and more easily.",
   "main": "dist/index.min.js",
   "module": "dist/index.esm.js",
