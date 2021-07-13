@@ -2,7 +2,8 @@ declare interface CreateInstance<T> {
 	(key?: string): T
 }
 declare type UseSingletonOptions = {
-	withKey?: boolean
+	withKey?: boolean,
+	immediate?: boolean
 }
 
 declare interface UseSingleton {
