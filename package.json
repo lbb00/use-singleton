@@ -1,7 +1,7 @@
 {
   "name": "use-singleton",
   "version": "0.1.2",
-  "description": "Create the singleton easily.",
+  "description": "Create the singleton better, and more easily.",
   "main": "dist/index.min.js",
   "module": "dist/index.esm.js",
   "types": "typings/index.d.ts",
@@ -18,7 +18,10 @@
   "keywords": [
     "singleton",
     "create singleton",
-    "sington"
+    "immediate",
+    "refresh",
+    "sington",
+    "create instance"
   ],
   "author": "lbb00",
   "license": "MIT",

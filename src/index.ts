@@ -1,13 +1,13 @@
-export const useSingleton: UseSingleton = <T>(
+export const useSingleton: UseSingleton = function <T>(
   createInstance: CreateInstance<T>, {
-    withKey = false
+    withKey = false, immediate = false
   } = {}
-) => {
+) {
   const UNDEFINED_INSTANCE = {}
-  let _instance: T | Record<any, any> = UNDEFINED_INSTANCE
+  let _instance: T | Record<string, undefined> = UNDEFINED_INSTANCE
   let _key: string | undefined
 
-  function checkSameKey (key?: string): boolean {
+  function checkSameKey(key?: string): boolean {
     if (!withKey || key === undefined || key === _key) {
       return true
     } else {
@@ -15,7 +15,7 @@ export const useSingleton: UseSingleton = <T>(
     }
   }
 
-  return function getSingleton (key?: string) {
+  function getSingleton(key?: string) {
     if (_instance === UNDEFINED_INSTANCE || !checkSameKey(key)) {
       _key = key
       _instance = createInstance(_key)
@@ -23,6 +23,10 @@ export const useSingleton: UseSingleton = <T>(
 
     return _instance as T
   }
+
+  immediate && getSingleton()
+
+  return getSingleton
 }
 
 export default useSingleton

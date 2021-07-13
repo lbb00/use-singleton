@@ -1,11 +1,15 @@
 import { useSingleton } from '../src/index'
 
-it('test sync singleton without key', async () => {
+it('test create singleton without key', async () => {
+  let hasInit = false
   let count = 0
   const getSingleton = useSingleton<number>(() => {
+    hasInit = true
     count = count + 1
     return count
   })
+
+  expect(hasInit).toBe(false)
 
   const [a, b, c] = [getSingleton(), getSingleton(), getSingleton('1')]
 
@@ -14,7 +18,27 @@ it('test sync singleton without key', async () => {
   expect(c).toBe(1)
 })
 
-it('test sync singleton with key', async () => {
+it('test create singleton with immediate', async () => {
+  let hasInit = false
+  let count = 0
+  const getSingleton = useSingleton<number>(() => {
+    hasInit = true
+    count = count + 1
+    return count
+  }, {
+    immediate: true
+  })
+
+  expect(hasInit).toBe(true)
+
+  const [a, b, c] = [getSingleton(), getSingleton(), getSingleton('1')]
+
+  expect(a).toBe(1)
+  expect(b).toBe(1)
+  expect(c).toBe(1)
+})
+
+it('test create singleton with key', async () => {
   let count = 0
   const getSingleton = useSingleton<number>(() => {
     count = count + 1
@@ -39,10 +63,10 @@ it('test sync singleton with key', async () => {
   expect(d).toBe(4)
 })
 
-it('test async singleton without key', async () => {
+it('test create singleton without key by async function', async () => {
   let count = 0
   const getAsyncSingleton = useSingleton<Promise<number>>(() => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         count = count + 1
         resolve(count)
@@ -57,10 +81,10 @@ it('test async singleton without key', async () => {
   expect(c).toBe(1)
 })
 
-it('test async singleton with key', async () => {
+it('test create singleton with key by async function', async () => {
   let count = 0
   const getAsyncSingleton = useSingleton<Promise<number>>(() => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         count = count + 1
         resolve(count)

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["esnext","dom"],
+    "lib": ["esnext", "dom"],
     "removeComments": true,
     "declaration": false,
     "sourceMap": false,
@@ -12,5 +12,5 @@
     "esModuleInterop": true,
     "moduleResolution": "node"
   },
-  "include": ["src", "typings"]
+  "include": ["src", "typings", "test"]
 }
