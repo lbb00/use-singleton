@@ -6,19 +6,19 @@
 [![License](https://img.shields.io/github/license/lbb00/use-singleton.svg)](https://github.com/lbb00/use-singleton/blob/master/LICENSE)
 [![License](https://img.shields.io/npm/dt/use-singleton.svg)](https://www.npmjs.com/package/use-singleton)
 
-[中文简体](https://github.com/lbb00/use-singleton/blob/master/README.zh.md)
+[English](https://github.com/lbb00/use-singleton)
 
-> Create singleton better, and more easily.
+> 更好、更轻松地创建单例。
 
-- Typescript
-- Optional immediately create
-- Optional recreate
-- Allow async create
-- Without dependence
-- Not OOP
-- Only ~1kb before gzipped
+- 支持 Typescript
+- 支持重新创建单例
+- 支持立即执行创建单例
+- 支持异步创建
+- 无依赖
+- 非面向对像
+- 压缩前不超过 1kb
 
-## Install
+## 安装
 
 ### NPM
 
@@ -26,7 +26,7 @@
 npm install use-singleton --save
 ```
 
-### Browser
+### 浏览器
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/use-singleton/dist/index.min.js"></script>
@@ -48,9 +48,9 @@ const getSingleton = useSingleton(createInstance, options);
   - withKey `{boolean}` default: `false`
   - immediate `{boolean}` default: `false`
 
-## Usage
+## 用法
 
-### Create singleton
+### 创建单例
 
 ```javascript
 const getNumber = useSingleton(() => {
@@ -66,7 +66,7 @@ getNumber();
 // -> 1
 ```
 
-### Create singleton immediately
+### 创建立即执行单例
 
 ```javascript
 const getNumber = useSingleton(
@@ -87,7 +87,7 @@ getNumber();
 // -> 1
 ```
 
-### Create singleton with key, and recreate by different key
+### 使用 key 创建单例，并通过改变 key 来重新创建单例
 
 ```javascript
 const getTime = useSingleton(
@@ -102,7 +102,7 @@ const getTime = useSingleton(
 
 const instance0 = getTime();
 // log -> undefined
-// -> date
+// -> Tue Jul 06 2021 01:15:04 GMT+0800 (中国标准时间)
 const instance1 = getTime();
 // -> same as instance0
 
@@ -115,7 +115,7 @@ const instance4 = getTime();
 // -> same as instance2
 ```
 
-### Create singleton by async function
+### 异步创建单例
 
 ```javascript
 const getUserInfo = useSingleton(
