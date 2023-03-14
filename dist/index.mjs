@@ -12,7 +12,7 @@ const useSingleton = function(createInstance, { withKey = false, immediate = fal
   const UNDEFINED_INSTANCE = {};
   let _key = void 0;
   const _cache = /* @__PURE__ */ new Map();
-  const [getSingle, setSingle] = useSingle(void 0);
+  const [getSingle, setSingle] = useSingle(UNDEFINED_INSTANCE);
   function getRealSingle() {
     return getSingle() === UNDEFINED_INSTANCE ? void 0 : getSingle();
   }
@@ -28,7 +28,7 @@ const useSingleton = function(createInstance, { withKey = false, immediate = fal
     const keyMatch = withKey && key !== _key;
     if (keyMatch || refresh || currentSingle === UNDEFINED_INSTANCE) {
       _key = key;
-      if (keyMatch && cache && _cache.has(_key)) {
+      if (!refresh && keyMatch && cache && _cache.has(_key)) {
         setSingle(_cache.get(_key));
       } else {
         setSingle(create(_key));

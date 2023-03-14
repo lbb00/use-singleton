@@ -7,63 +7,64 @@ export const useSingle = function <T>(
   let value: T =
     typeof initialValue === "function"
       ? (initialValue as () => T)()
-      : initialValue;
+      : initialValue
 
   function getter() {
-    return value;
+    return value
   }
 
   const setter: useSingleSetter<T> = (newValue) => {
     value =
       typeof newValue === "function"
         ? (newValue as (oldValue?: T) => T)(value)
-        : newValue;
-  };
+        : newValue
+  }
 
-  return [getter, setter];
-};
+  return [getter, setter]
+}
 
 export const useSingleton = function <T, K = any>(
   createInstance: (key?: K, oldInstance?: T) => T,
   { withKey = false, immediate = false, cache = false } = {}
 ) {
   // maybe the undefined is the value of the instance
-  const UNDEFINED_INSTANCE = {};
-  let _key: K | undefined = undefined;
-  const _cache = new Map<K | undefined, T>();
-  const [getSingle, setSingle] = useSingle<T | undefined>(undefined);
+  const UNDEFINED_INSTANCE = {}
+  let _key: K | undefined = undefined
+  const _cache = new Map<K | undefined, T>()
+  const [getSingle, setSingle] = useSingle<T | {}>(UNDEFINED_INSTANCE)
 
   function getRealSingle() {
-    return getSingle() === UNDEFINED_INSTANCE ? undefined : (getSingle() as T);
+    return getSingle() === UNDEFINED_INSTANCE ? undefined : (getSingle() as T)
   }
 
   function create(key?: K) {
     const instance = withKey
       ? createInstance(key, getRealSingle())
-      : createInstance(void 0, getRealSingle());
+      : createInstance(void 0, getRealSingle())
     if (cache) {
-      _cache.set(key, instance);
+      _cache.set(key, instance)
     }
-    return instance;
+    return instance
   }
 
   function getInstance(key?: K, { refresh = false } = {}) {
-    const currentSingle = getSingle();
-    const keyMatch = withKey && key !== _key;
+    const currentSingle = getSingle()
+    const keyMatch = withKey && key !== _key
     if (keyMatch || refresh || currentSingle === UNDEFINED_INSTANCE) {
-      _key = key;
-      if (keyMatch && cache && _cache.has(_key)) {
-        setSingle(_cache.get(_key) as T);
+      _key = key
+
+      if (!refresh && keyMatch && cache && _cache.has(_key)) {
+        setSingle(_cache.get(_key) as T)
       } else {
-        setSingle(create(_key));
+        setSingle(create(_key))
       }
     }
-    return getRealSingle();
+    return getRealSingle()
   }
 
-  immediate && getInstance();
+  immediate && getInstance()
 
-  return getInstance;
-};
+  return getInstance
+}
 
-export default useSingleton;
+export default useSingleton
