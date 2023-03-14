@@ -23,11 +23,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
-        run: yarn
+        run: pnpm install
       - name: Test
-        run: yarn test
+        run: pnpm test
       - name: Build
-        run: yarn build
+        run: pnpm build
       - name: Upload coverage
         uses: codecov/codecov-action@v1
         with:

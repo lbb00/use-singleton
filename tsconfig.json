@@ -3,7 +3,6 @@
     "target": "esnext",
     "lib": ["esnext", "dom"],
     "removeComments": true,
-    "declaration": false,
     "sourceMap": false,
     "strict": true,
     "noImplicitAny": false,
