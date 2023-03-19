@@ -4,7 +4,8 @@
 [![Bundlephobia](https://badgen.net/bundlephobia/minzip/use-singleton)](https://bundlephobia.com/result?p=use-singleton)
 [![Coverage](https://img.shields.io/codecov/c/github/lbb00/use-singleton.svg)](https://codecov.io/gh/lbb00/use-singleton)
 [![License](https://img.shields.io/github/license/lbb00/use-singleton.svg)](https://github.com/lbb00/use-singleton/blob/master/LICENSE)
-[![License](https://img.shields.io/npm/dt/use-singleton.svg)](https://www.npmjs.com/package/use-singleton)
+[![Npm](https://img.shields.io/npm/dt/use-singleton.svg)](https://www.npmjs.com/package/use-singleton)
+[![Known Vulnerabilities](https://snyk.io/test/github/lbb00/use-singleton/badge.svg)](https://snyk.io/test/github/lbb00/use-singleton)
 
 > Create the powerful singleton easily.
 
