@@ -6,17 +6,16 @@
 [![License](https://img.shields.io/github/license/lbb00/use-singleton.svg)](https://github.com/lbb00/use-singleton/blob/master/LICENSE)
 [![License](https://img.shields.io/npm/dt/use-singleton.svg)](https://www.npmjs.com/package/use-singleton)
 
-[中文简体](https://github.com/lbb00/use-singleton/blob/master/README.zh.md)
+> Create the powerful singleton easily.
 
-> Create singleton better, and more easily.
-
+- Lazy or Immediately
+- Refresh
+- Cache value
+- Support cjs, ejs, umd
 - Typescript
-- Optional immediately create
-- Optional recreate
-- Allow async create
-- Without dependence
-- Not OOP
-- Only ~1kb before gzipped
+- Zero dependence
+- Side-effect free
+- Only ~.5kb after gzipped
 
 ## Install
 
@@ -31,26 +30,50 @@ npm install use-singleton --save
 ```html
 <script src="https://cdn.jsdelivr.net/npm/use-singleton/dist/index.min.js"></script>
 <script>
-  var useSingleton = UseSingleton.default;
+  var useSingle = UseSingleton.useSingle;
+  var useSingleton = UseSingleton.useSingleton;
+</script>
+
+// es2015+
+<script type="module">
+  import { useSingle } from "https://esm.sh/use-singleton";
 </script>
 ```
 
-## API
+## Usage
 
 ```javascript
-import useSingleton from "use-singleton";
+import { useSingleton, useSingle } from "use-singleton";
 
+// the simple
+const [getter, setter] = useSingle(initialValue);
+
+// the powerful
 const getSingleton = useSingleton(createInstance, options);
 ```
 
-- createInstance `{function}`,should return instance.
-- options `{Object}` default: `{}`
-  - withKey `{boolean}` default: `false`
-  - immediate `{boolean}` default: `false`
+## Example
 
-## Usage
+### useSingle
 
-### Create singleton
+```javascript
+const [getCount, setCount] = useSingle(0);
+getCount(); // -> 0
+setCount(1);
+getCount(1); // -> 1
+
+// vue
+const [getCount, setCount] = useSingle(ref(0));
+watch(getCount, (val) => console.log(val));
+
+setCount(1);
+// log -> 1
+getCount().value; // -> 1
+```
+
+### useSingleton
+
+#### Lazy
 
 ```javascript
 const getNumber = useSingleton(() => {
@@ -62,11 +85,10 @@ getNumber();
 // log -> 'created'
 // -> 1
 
-getNumber();
-// -> 1
+getNumber(); // -> 1
 ```
 
-### Create singleton immediately
+#### Immediately
 
 ```javascript
 const getNumber = useSingleton(
@@ -75,52 +97,47 @@ const getNumber = useSingleton(
     return 1;
   },
   {
-    immediate: true,
+    immediately: true,
   }
 );
-// log -> 'init'
-
-getNumber();
-// -> 1
+// log -> 'created'
 
 getNumber();
 // -> 1
 ```
 
-### Create singleton with key, and recreate by different key
+#### Async
 
 ```javascript
-const getTime = useSingleton(
-  (key) => {
-    console.log(key);
-    return new Date();
-  },
-  {
-    withKey: true,
+const getServerInfo = useSingleton(
+  () => {
+    console.log('fetch data')
+    return  await api.get(`https://foo.bar/api/server-info`)
   }
 );
 
-const instance0 = getTime();
-// log -> undefined
-// -> date
-const instance1 = getTime();
-// -> same as instance0
+await getServerKey()
+// log -> 'fetch data'
+// -> server-info
 
-const instance2 = getTime(1);
-// log -> 1
-// -> new date
-const instance3 = getTime(1);
-// -> same as instance2
-const instance4 = getTime();
-// -> same as instance2
+await getServerKey()
+// -> server-info
+
+await getServerKey(null,{ refresh: true})
+// log -> 'fetch data'
+// -> server-info_new
+
+await getServerKey()
+// -> server-info_new
 ```
 
-### Create singleton by async function
+#### With key
 
 ```javascript
 const getUserInfo = useSingleton(
-  async (key: userId) => {
-    console.log(userId);
+  async (key) => {
+    const userId = key;
+    console.log(`fetch user info: ${userId}`);
     userInfo = await api.get(`https://foo.bar/api/user?id=${userId}`);
     return userInfo;
   },
@@ -130,8 +147,42 @@ const getUserInfo = useSingleton(
 );
 
 await Promise.all[(getUserInfo(1), getUserInfo(1), getUserInfo(2))];
-// log -> 1
-// log -> 2
-
+// log -> 'fetch user info: 1'
+// log -> 'fetch user info: 2'
 // -> [userInfo_1, userInfo_1, userInfo_2]
+
+await getUserInfo(1);
+// log -> 'fetch user info: 1'
+// -> userInfo_1
+```
+
+#### Key cache
+
+> To use the key cache, `withKey` must be set to `true`.
+
+```javascript
+const getUserInfo = useSingleton(
+  async (key) => {
+    const userId = key;
+    console.log(`fetch user info: ${userId}`);
+    userInfo = await api.get(`https://foo.bar/api/user?id=${userId}`);
+    return userInfo;
+  },
+  {
+    withKey: true,
+    keyCache: true,
+  }
+);
+
+await Promise.all[(getUserInfo(1), getUserInfo(1), getUserInfo(2))];
+// log -> 'fetch user info: 1'
+// log -> 'fetch user info: 2'
+// -> [userInfo_1, userInfo_1, userInfo_2]
+
+await getUserInfo(1);
+// form cache -> userInfo_1
+
+await getUserInfo(1, { refresh: false });
+// log -> 'fetch user info: 1'
+// -> userInfo_1
 ```
