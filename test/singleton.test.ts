@@ -106,7 +106,7 @@ test("test create singleton with key and cache", async () => {
     },
     {
       withKey: true,
-      cache: true,
+      keyCache: true,
     }
   )
   expect(await getAsyncSingleton(1)).toBe(1)

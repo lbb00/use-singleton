@@ -25,12 +25,12 @@ export const useSingle = function <T>(
 
 export const useSingleton = function <T, K = any>(
   createInstance: (key?: K, oldInstance?: T) => T,
-  { withKey = false, immediate = false, cache = false } = {}
+  { withKey = false, immediate = false, keyCache = false } = {}
 ) {
   // maybe the undefined is the value of the instance
   const UNDEFINED_INSTANCE = {}
   let _key: K | undefined = undefined
-  const _cache = new Map<K | undefined, T>()
+  const cache = new Map<K | undefined, T>()
   const [getSingle, setSingle] = useSingle<T | {}>(UNDEFINED_INSTANCE)
 
   function getRealSingle() {
@@ -41,8 +41,8 @@ export const useSingleton = function <T, K = any>(
     const instance = withKey
       ? createInstance(key, getRealSingle())
       : createInstance(void 0, getRealSingle())
-    if (cache) {
-      _cache.set(key, instance)
+    if (keyCache) {
+      cache.set(key, instance)
     }
     return instance
   }
@@ -53,8 +53,8 @@ export const useSingleton = function <T, K = any>(
     if (keyMatch || refresh || currentSingle === UNDEFINED_INSTANCE) {
       _key = key
 
-      if (!refresh && keyMatch && cache && _cache.has(_key)) {
-        setSingle(_cache.get(_key) as T)
+      if (!refresh && keyMatch && keyCache && cache.has(_key)) {
+        setSingle(cache.get(_key) as T)
       } else {
         setSingle(create(_key))
       }

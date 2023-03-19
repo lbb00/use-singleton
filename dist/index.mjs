@@ -8,18 +8,18 @@ const useSingle = function(initialValue) {
   };
   return [getter, setter];
 };
-const useSingleton = function(createInstance, { withKey = false, immediate = false, cache = false } = {}) {
+const useSingleton = function(createInstance, { withKey = false, immediate = false, keyCache = false } = {}) {
   const UNDEFINED_INSTANCE = {};
   let _key = void 0;
-  const _cache = /* @__PURE__ */ new Map();
+  const cache = /* @__PURE__ */ new Map();
   const [getSingle, setSingle] = useSingle(UNDEFINED_INSTANCE);
   function getRealSingle() {
     return getSingle() === UNDEFINED_INSTANCE ? void 0 : getSingle();
   }
   function create(key) {
     const instance = withKey ? createInstance(key, getRealSingle()) : createInstance(void 0, getRealSingle());
-    if (cache) {
-      _cache.set(key, instance);
+    if (keyCache) {
+      cache.set(key, instance);
     }
     return instance;
   }
@@ -28,8 +28,8 @@ const useSingleton = function(createInstance, { withKey = false, immediate = fal
     const keyMatch = withKey && key !== _key;
     if (keyMatch || refresh || currentSingle === UNDEFINED_INSTANCE) {
       _key = key;
-      if (!refresh && keyMatch && cache && _cache.has(_key)) {
-        setSingle(_cache.get(_key));
+      if (!refresh && keyMatch && keyCache && cache.has(_key)) {
+        setSingle(cache.get(_key));
       } else {
         setSingle(create(_key));
       }

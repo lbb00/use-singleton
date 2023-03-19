@@ -33,6 +33,11 @@ npm install use-singleton --save
   var useSingle = UseSingleton.useSingle;
   var useSingleton = UseSingleton.useSingleton;
 </script>
+
+// es2015+
+<script type="module">
+  import { useSingle } from "https://esm.sh/use-singleton";
+</script>
 ```
 
 ## Usage
@@ -40,10 +45,10 @@ npm install use-singleton --save
 ```javascript
 import { useSingleton, useSingle } from "use-singleton";
 
-// simple
+// the simple
 const [getter, setter] = useSingle(initialValue);
 
-// powerful
+// the powerful
 const getSingleton = useSingleton(createInstance, options);
 ```
 
@@ -151,9 +156,9 @@ await getUserInfo(1);
 // -> userInfo_1
 ```
 
-#### Cache
+#### Key cache
 
-> To use the cache, `withKey` must be set to `true`.
+> To use the key cache, `withKey` must be set to `true`.
 
 ```javascript
 const getUserInfo = useSingleton(
@@ -165,7 +170,7 @@ const getUserInfo = useSingleton(
   },
   {
     withKey: true,
-    cache: true,
+    keyCache: true,
   }
 );
 
