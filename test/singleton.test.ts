@@ -114,3 +114,25 @@ test("test create singleton with key and cache", async () => {
   expect(await getAsyncSingleton(1)).toBe(1)
   expect(await getAsyncSingleton(1, { refresh: true })).toBe(3)
 })
+
+test("test clean", async () => {
+  let fetchCount = 0
+  const getAsyncSingleton = useSingleton<Promise<number>>(
+    () => {
+      return new Promise((resolve) => {
+        fetchCount = fetchCount + 1
+        setTimeout(() => {
+          resolve(fetchCount)
+        }, 200)
+      })
+    },
+    {
+      withKey: true,
+      keyCache: true,
+    }
+  )
+  expect(await getAsyncSingleton(1)).toBe(1)
+  expect(await getAsyncSingleton(2)).toBe(2)
+  expect(await getAsyncSingleton(1,{ clean: true })).toBe(1)
+  expect(await getAsyncSingleton(1)).toBe(3)
+})

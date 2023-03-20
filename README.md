@@ -11,7 +11,8 @@
 
 - Lazy or Immediately
 - Refresh
-- Cache value
+- Cache value with key
+- Clean value and cache
 - Support cjs, ejs, umd
 - Typescript
 - Zero dependence
@@ -184,6 +185,38 @@ await getUserInfo(1);
 // form cache -> userInfo_1
 
 await getUserInfo(1, { refresh: false });
+// log -> 'fetch user info: 1'
+// -> userInfo_1
+```
+
+#### Clean value and cache
+
+```javascript
+const getUserInfo = useSingleton(
+  async (key) => {
+    const userId = key;
+    console.log(`fetch user info: ${userId}`);
+    userInfo = await api.get(`https://foo.bar/api/user?id=${userId}`);
+    return userInfo;
+  },
+  {
+    withKey: true,
+    keyCache: true,
+  }
+);
+
+await Promise.all[(getUserInfo(1), getUserInfo(1), getUserInfo(2))];
+// log -> 'fetch user info: 1'
+// log -> 'fetch user info: 2'
+// -> [userInfo_1, userInfo_1, userInfo_2]
+
+await getUserInfo(1);
+// form cache -> userInfo_1
+
+await getUserInfo(1, { clean: true });
+// form cache -> userInfo_1
+
+await getUserInfo(1);
 // log -> 'fetch user info: 1'
 // -> userInfo_1
 ```
